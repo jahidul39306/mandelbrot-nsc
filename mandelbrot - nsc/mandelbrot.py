@@ -5,6 +5,8 @@ Course : Numerical Scientific Computing 2026
 """
 import numpy as np
 import matplotlib.pyplot as plt
+import time
+
 
 def mandelbrot_point(c, max_iter=100):
     z = 0
@@ -40,3 +42,8 @@ plt.imshow(data, cmap="inferno")
 plt.colorbar(label="Iterations")
 plt.title("Naive Mandelbrot (100x100)")
 plt.show()
+
+start = time.time()
+result = compute_mandelbrot(-2, 1, -1.5, 1.5, 1024, 1024)
+elapsed = time.time() - start
+print(f"Computation took {elapsed:.3f} seconds")
