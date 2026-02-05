@@ -35,15 +35,12 @@ def compute_mandelbrot(
 
     return result
 
-data = compute_mandelbrot(width=100, height=100, max_iter=50)
-print(data.shape)   # (100, 100)
-print(data.min(), data.max())
-plt.imshow(data, cmap="inferno")
-plt.colorbar(label="Iterations")
-plt.title("Naive Mandelbrot (100x100)")
-plt.show()
-
 start = time.time()
 result = compute_mandelbrot(-2, 1, -1.5, 1.5, 1024, 1024)
 elapsed = time.time() - start
 print(f"Computation took {elapsed:.3f} seconds")
+
+plt.imshow(result, cmap="viridis")
+plt.colorbar(label="Iterations")
+plt.title("Mandelbrot Set – viridis colormap")
+plt.show()
