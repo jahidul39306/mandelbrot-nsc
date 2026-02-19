@@ -35,12 +35,16 @@ def compute_mandelbrot(
 
     return result
 
-start = time.perf_counter()
-result = compute_mandelbrot(-2, 1, -1.5, 1.5, 1024, 1024)
-elapsed = time.perf_counter() - start
-print(f"Computation took {elapsed:.3f} seconds")
+results = []
+for i in range(3):
+    start = time.perf_counter()
+    result = compute_mandelbrot(-2, 1, -1.5, 1.5, 1024, 1024)
+    elapsed = time.perf_counter() - start
+    print(f"Computation took {elapsed:.3f} seconds")
+    results.append(elapsed)
 
-plt.imshow(result, cmap="viridis")
-plt.colorbar(label="Iterations")
-plt.title("Mandelbrot Set – viridis colormap")
-plt.show()
+# plt.imshow(result, cmap="viridis")
+# plt.colorbar(label="Iterations")
+# plt.title("Mandelbrot Set – viridis colormap")
+# plt.show()
+print(results)

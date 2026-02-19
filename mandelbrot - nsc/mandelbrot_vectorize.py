@@ -10,10 +10,11 @@ Z = np.zeros_like(C)
 M = np.zeros(C.shape, dtype=int)
 max_iter = 100
 
-start = time.perf_counter()
-for n in range(max_iter):
-    mask = np.abs(Z) <= 2
-    Z[mask] = Z[mask] ** 2 + C[mask]
-    M[mask] = n
-elapsed = time.perf_counter() - start
-print(f"Computation took {elapsed:.3f} seconds")
+for i in range(3):
+    start = time.perf_counter()
+    for n in range(max_iter):
+        mask = np.abs(Z) <= 2
+        Z[mask] = Z[mask] ** 2 + C[mask]
+        M[mask] = n
+    elapsed = time.perf_counter() - start
+    print(f"Computation took {elapsed:.3f} seconds")
