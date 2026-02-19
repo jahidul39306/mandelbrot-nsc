@@ -35,9 +35,9 @@ def compute_mandelbrot(
 
     return result
 
-start = time.time()
+start = time.perf_counter()
 result = compute_mandelbrot(-2, 1, -1.5, 1.5, 1024, 1024)
-elapsed = time.time() - start
+elapsed = time.perf_counter() - start
 print(f"Computation took {elapsed:.3f} seconds")
 
 plt.imshow(result, cmap="viridis")
