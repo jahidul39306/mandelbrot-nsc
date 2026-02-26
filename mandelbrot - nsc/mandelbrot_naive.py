@@ -3,6 +3,8 @@ Mandelbrot Set Generator
 Author : Md Jahidul Islam Noor
 Course : Numerical Scientific Computing 2026
 """
+from os import name
+
 import numpy as np
 import matplotlib.pyplot as plt
 import time
@@ -17,7 +19,7 @@ def mandelbrot_point(c, max_iter=100):
     return max_iter
 
 
-def compute_mandelbrot(
+def mandelbrot_naive(
     xmin=-2.0, xmax=1.0,
     ymin=-1.5, ymax=1.5,
     width=1024, height=1024,
@@ -38,7 +40,7 @@ def compute_mandelbrot(
 results = []
 for i in range(3):
     start = time.perf_counter()
-    result = compute_mandelbrot(-2, 1, -1.5, 1.5, 1024, 1024)
+    result = mandelbrot_naive(-2, 1, -1.5, 1.5, 1024, 1024)
     elapsed = time.perf_counter() - start
     print(f"Computation took {elapsed:.3f} seconds")
     results.append(elapsed)
@@ -48,3 +50,6 @@ for i in range(3):
 # plt.title("Mandelbrot Set – viridis colormap")
 # plt.show()
 print(results)
+
+if name == "__main__":
+    mandelbrot_naive()

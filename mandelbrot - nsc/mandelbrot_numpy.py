@@ -1,9 +1,11 @@
+from os import name
+
 import numpy as np
 import time
 import matplotlib.pyplot as plt
 
 
-def mandelbrot_vectorized(xmin=-2.0, xmax=1.0, ymin=-1.5, ymax=1.5, width=1024, height=1024, max_iter=100):
+def mandelbrot_numpy(xmin=-2.0, xmax=1.0, ymin=-1.5, ymax=1.5, width=1024, height=1024, max_iter=100):
     x = np.linspace(xmin, xmax, width)
     y = np.linspace(ymin, ymax, height)
     X, Y = np.meshgrid(x, y)
@@ -24,7 +26,7 @@ results = []
 
 for width, height in resolutions:
     start = time.perf_counter()
-    result = mandelbrot_vectorized(-2, 1, -1.5, 1.5, width, height)
+    result = mandelbrot_numpy(-2, 1, -1.5, 1.5, width, height)
     elapsed = time.perf_counter() - start
     results.append(elapsed)
 
@@ -34,3 +36,6 @@ for (width, height), elapsed in zip(resolutions, results):
     plt.colorbar(label="Iterations")
     plt.title(f"Mandelbrot Set – viridis colormap, Resolution: {width}x{height}")
     plt.show()
+    
+if __name__ == "__main__":
+    mandelbrot_numpy()
