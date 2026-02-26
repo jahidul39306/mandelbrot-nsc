@@ -37,19 +37,19 @@ def mandelbrot_naive(
 
     return result
 
-results = []
-for i in range(3):
-    start = time.perf_counter()
-    result = mandelbrot_naive(-2, 1, -1.5, 1.5, 1024, 1024)
-    elapsed = time.perf_counter() - start
-    print(f"Computation took {elapsed:.3f} seconds")
-    results.append(elapsed)
+def benchmark_naive():
+    results = []
+    for i in range(3):
+        start = time.perf_counter()
+        result = mandelbrot_naive(-2, 1, -1.5, 1.5, 1024, 1024)
+        elapsed = time.perf_counter() - start
+        print(f"Computation took {elapsed:.3f} seconds")
+        results.append(elapsed)
+    # plt.imshow(result, cmap="viridis")
+    # plt.colorbar(label="Iterations")
+    # plt.title("Mandelbrot Set – viridis colormap")
+    # plt.show()
+    print(results)
 
-# plt.imshow(result, cmap="viridis")
-# plt.colorbar(label="Iterations")
-# plt.title("Mandelbrot Set – viridis colormap")
-# plt.show()
-print(results)
-
-if name == "__main__":
-    mandelbrot_naive()
+if __name__ == "__main__":
+    benchmark_naive()
