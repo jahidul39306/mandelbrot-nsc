@@ -18,11 +18,10 @@ def mandelbrot_point(c, max_iter=100):
         z = z**2 + c
     return max_iter
 
-
+@profile
 def mandelbrot_naive(
     xmin=-2.0, xmax=1.0,
-    ymin=-1.5, ymax=1.5,
-    width=1024, height=1024,
+    ymin=-1.5, ymax=1.5,    width=1024, height=1024,
     max_iter=100
 ):
     x_vals = np.linspace(xmin, xmax, width)
@@ -52,4 +51,4 @@ def benchmark_naive():
     print(results)
 
 if __name__ == "__main__":
-    benchmark_naive()
+    mandelbrot_naive()

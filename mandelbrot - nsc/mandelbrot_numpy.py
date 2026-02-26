@@ -4,7 +4,7 @@ import numpy as np
 import time
 import matplotlib.pyplot as plt
 
-
+@profile
 def mandelbrot_numpy(xmin=-2.0, xmax=1.0, ymin=-1.5, ymax=1.5, width=1024, height=1024, max_iter=100):
     x = np.linspace(xmin, xmax, width)
     y = np.linspace(ymin, ymax, height)
@@ -39,4 +39,4 @@ def benchmark_numpy():
         plt.show()
     
 if __name__ == "__main__":
-    benchmark_numpy()
+    mandelbrot_numpy()
