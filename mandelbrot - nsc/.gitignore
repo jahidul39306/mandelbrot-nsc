@@ -1,2 +1,3 @@
 environment.yml
 *.ipynb_checkpoints
+__pycache__/
