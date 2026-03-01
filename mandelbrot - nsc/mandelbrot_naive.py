@@ -9,16 +9,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 import time
 
-
 def mandelbrot_point(c, max_iter=100):
-    z = 0
+    z = 0j
     for n in range(max_iter):
         if abs(z) > 2:
             return n
         z = z**2 + c
     return max_iter
 
-@profile
+# @profile
 def mandelbrot_naive(
     xmin=-2.0, xmax=1.0,
     ymin=-1.5, ymax=1.5,    width=1024, height=1024,
