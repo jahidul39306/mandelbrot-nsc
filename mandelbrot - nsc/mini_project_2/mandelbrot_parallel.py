@@ -62,9 +62,36 @@ if __name__ == "__main__":
     mandelbrot_serial(N, x_min, x_max, y_min, y_max, max_iter)
     serial_time = time.perf_counter() - start_time
     print(f"Serial execution time: {serial_time:.4f} seconds")
-    
+
     # Parallel execution
     start_time = time.perf_counter()
     mandelbrot_parallel(N, x_min, x_max, y_min, y_max, max_iter, n_workers=4)
     parallel_time = time.perf_counter() - start_time
     print(f"Parallel execution time: {parallel_time:.4f} seconds")
+
+    times = []
+    for _ in range(3):
+        t0 = time.perf_counter()
+        mandelbrot_serial(N, x_min, x_max, y_min, y_max, max_iter)
+        times.append(time.perf_counter() - t0)
+    t_serial = statistics.median(times)
+
+    for n_workers in range(1, os.cpu_count() + 1):
+        chunk_size = max(1, N // n_workers)
+        chunks, row = [], 0
+        while row < N:
+            end = min(row + chunk_size, N)
+            chunks.append((row, end, N, x_min, x_max, y_min, y_max, max_iter))
+            row = end
+        with Pool(processes=n_workers) as pool:
+            pool.map(_worker, chunks)  # warm-up: Numba JIT in all workers
+            times = []
+            for _ in range(3):
+                t0 = time.perf_counter()
+                np.vstack(pool.map(_worker, chunks))
+                times.append(time.perf_counter() - t0)
+        t_par = statistics.median(times)
+        speedup = t_serial / t_par
+        print(
+            f"{n_workers:2d} workers: {t_par:.3f}s, speedup={speedup:.2f}x, eff={speedup/n_workers*100:.0f}%"
+        )
