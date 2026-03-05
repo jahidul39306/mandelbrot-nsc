@@ -45,9 +45,11 @@ def plot_diffrent_precision():
 
 
 if __name__ == "__main__":
+    mandelbrot_numba_typed(-2, 1, -1.5, 1.5, 1024, 1024, dtype=np.float32)
+    mandelbrot_numba_typed(-2, 1, -1.5, 1.5, 1024, 1024, dtype=np.float64)
     for dtype in [np.float32, np.float64]:
         t0 = time.perf_counter()
         mandelbrot_numba_typed(-2, 1, -1.5, 1.5, 1024, 1024, dtype=dtype)
         print(f"{ dtype.__name__ }: { time.perf_counter()-t0:.3f}s")
     
-    #plot_diffrent_precision()
+    plot_diffrent_precision()
