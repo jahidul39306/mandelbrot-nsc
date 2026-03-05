@@ -34,14 +34,37 @@ def mandelbrot_serial(N, x_min, x_max, y_min, y_max, max_iter=100):
     return mandelbrot_chunk(0, N, N, x_min, x_max, y_min, y_max, max_iter)
 
 
+def _worker(args):
+    return mandelbrot_chunk(*args)
+
+
+def mandelbrot_parallel(N, x_min, x_max, y_min, y_max, max_iter=100, n_workers=4):
+    chunk_size = max(1, N // n_workers)
+    chunks, row = [], 0
+    while row < N:
+        row_end = min(row + chunk_size, N)
+        chunks.append((row, row_end, N, x_min, x_max, y_min, y_max, max_iter))
+        row = row_end
+    with Pool(processes=n_workers) as pool:
+        pool.map(_worker, chunks)  # un-timed warm-up: Numba JIT in workers
+        parts = pool.map(_worker, chunks)
+    return np.vstack(parts)
+
+
 if __name__ == "__main__":
-    N = 1000
-    x_min, x_max = -2.0, 1.0
-    y_min, y_max = -1.5, 1.5
+    N = 1024
+    x_min, x_max = -2.5, 1.0
+    y_min, y_max = -1.25, 1.25
     max_iter = 100
 
     # Serial execution
-    start_time = time.time()
+    start_time = time.perf_counter()
     mandelbrot_serial(N, x_min, x_max, y_min, y_max, max_iter)
-    serial_time = time.time() - start_time
+    serial_time = time.perf_counter() - start_time
     print(f"Serial execution time: {serial_time:.4f} seconds")
+    
+    # Parallel execution
+    start_time = time.perf_counter()
+    mandelbrot_parallel(N, x_min, x_max, y_min, y_max, max_iter, n_workers=4)
+    parallel_time = time.perf_counter() - start_time
+    print(f"Parallel execution time: {parallel_time:.4f} seconds")
