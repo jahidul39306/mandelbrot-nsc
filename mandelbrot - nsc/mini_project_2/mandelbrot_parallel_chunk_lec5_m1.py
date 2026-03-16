@@ -86,6 +86,7 @@ if __name__ == "__main__":
     t_serial = statistics.median(times)
 
     # Varying number of workers and chunks
+
     for n_workers in range(1, os.cpu_count() + 1):
         n_chunks = n_workers * 4
 
