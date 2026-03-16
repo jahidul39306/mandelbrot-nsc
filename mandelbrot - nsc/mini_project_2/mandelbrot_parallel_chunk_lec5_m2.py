@@ -2,7 +2,8 @@ import numpy as np
 from numba import njit
 from multiprocessing import Pool
 import time, os, statistics
-
+import sys, os
+sys.path.append(os.path.dirname(__file__))  # so workers can find this module
 
 @njit(cache=True)
 def mandelbrot_pixel(c_real, c_imag, max_iter):
