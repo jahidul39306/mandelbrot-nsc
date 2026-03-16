@@ -17,7 +17,7 @@ def bench(fn, *args, runs=5):
 
 if __name__ == "__main__":
     width, height = 1024, 1024
-    n_workers = 11
+    n_workers = 12
     args = (-2, 1, -1.5, 1.5, width, height)
     args_parallel = (width, -2, 1, -1.5, 1.5, 100, n_workers, n_workers * 2) # best result got from n_chunks = 2 * n_workers
 

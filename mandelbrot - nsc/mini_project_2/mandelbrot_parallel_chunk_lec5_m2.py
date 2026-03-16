@@ -61,7 +61,7 @@ if __name__ == "__main__":
     x_min, x_max = -2.5, 1.0
     y_min, y_max = -1.25, 1.25
     max_iter = 100
-    best_workers = 11
+    best_workers = 12
     t_baseline = None
 
     print(f"{'n_chunks':<12} {'time (s)':<12} {'vs. 1x':<12} {'LIF':<10}")
