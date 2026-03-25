@@ -14,8 +14,10 @@ def mandelbrot_pixel(c_real, c_imag, max_iter):
         z_sq = z_real * z_real + z_imag * z_imag
         if z_sq > 4.0:
             return i
-        z_imag = 2.0 * z_real * z_imag + c_imag
-        z_real = z_real * z_real - z_imag * z_imag + c_real
+        z_real, z_imag = (
+            z_real * z_real - z_imag * z_imag + c_real,
+            2.0 * z_real * z_imag + c_imag,
+        )
     return max_iter
 
 
@@ -72,21 +74,9 @@ if __name__ == "__main__":
     client.run(lambda: mandelbrot_chunk(0, 8, 8, X_MIN, X_MAX, Y_MIN, Y_MAX, 10))
 
     # ---------------------------
-    # Baseline (1 chunk)
-    # ---------------------------
-    times = []
-    for _ in range(3):
-        t0 = time.perf_counter()
-        mandelbrot_dask(N, X_MIN, X_MAX, Y_MIN, Y_MAX, max_iter, n_chunks=1)
-        times.append(time.perf_counter() - t0)
-
-    T1 = statistics.median(times)
-
-    print(f"\nBaseline (1 chunk): {T1:.4f} s\n")
-
-    # ---------------------------
     # Sweep chunk counts
     # ---------------------------
+    T1 = None
     chunk_values = [1, 2, 4, 8, 16, 32, 64, 128]
 
     results = []
@@ -103,6 +93,10 @@ if __name__ == "__main__":
             times.append(time.perf_counter() - t0)
 
         Tp = statistics.median(times)
+
+        if T1 is None:
+            T1 = Tp
+            print(f"Baseline (1 chunk): {T1:.4f} seconds")
 
         speedup = T1 / Tp
         vs1x = Tp / T1
@@ -125,7 +119,6 @@ if __name__ == "__main__":
     # ---------------------------
     # Plot
     # ---------------------------
-    print(results)
     x = [r[0] for r in results]
     y = [r[1] for r in results]
 
