@@ -12,8 +12,10 @@ def mandelbrot_pixel(c_real, c_imag, max_iter):
         if z_sq > 4.0:
             return i
 
-        z_imag = 2.0 * z_real * z_imag + c_imag
-        z_real = z_real * z_real - z_imag * z_imag + c_real
+        z_real, z_imag = (
+            z_real * z_real - z_imag * z_imag + c_real,
+            2.0 * z_real * z_imag + c_imag,
+        )
 
     return max_iter
 
@@ -52,6 +54,12 @@ if __name__ == "__main__":
     client = Client(cluster)
     # warm-up: JIT compilation in workers
     client.run(lambda: mandelbrot_chunk(0, 8, 8, X_MIN, X_MAX, Y_MIN, Y_MAX, 10))
+
+    ref = mandelbrot_chunk(0, N, N, X_MIN, X_MAX, Y_MIN, Y_MAX, max_iter)
+    result = mandelbrot_dask(N, X_MIN, X_MAX, Y_MIN, Y_MAX, max_iter)
+    assert np.array_equal(ref, result), "Dask result differs from serial!"
+    print("Correctness check passed ✅")
+
     times = []
     for _ in range(3):
         t0 = time.perf_counter()
