@@ -21,7 +21,7 @@ def bench(fn, *args, runs=5):
 
 if __name__ == "__main__":
     width, height = 1024, 1024
-    n_workers = 12
+    n_workers = 8
     args = (-2, 1, -1.5, 1.5, width, height)
     args_parallel = (
         width,
