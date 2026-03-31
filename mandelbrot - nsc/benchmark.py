@@ -11,7 +11,7 @@ from mini_project_2.mandelbrot_lec7_m1 import mandelbrot_dask as mandelbrot_dask
 
 
 def bench(fn, *args, runs=5):
-    fn(*args)  # warm -up
+    fn(*args)  # warm-up
     times = []
     for _ in range(runs):
         t0 = time.perf_counter()
@@ -21,58 +21,69 @@ def bench(fn, *args, runs=5):
 
 
 if __name__ == "__main__":
-    width, height = 4096, 4096
     n_workers = 8
-    args = (-2, 1, -1.5, 1.5, width, height)
-    args_parallel = (
-        width,
-        -2,
-        1,
-        -1.5,
-        1.5,
-        100,
-        n_workers,
-        n_workers * 2,
-    )  # best result got from n_chunks = 2 * n_workers
-    args_dask_local = (
-        width,
-        -2,
-        1,
-        -1.5,
-        1.5,
-        100,
-        4,
-    )  # 4 is the best n_chunks for dask local with 8 workers
-    args_dask_strato = (
-        width,
-        -2,
-        1,
-        -1.5,
-        1.5,
-        100,
-        4,
-    )
+    resolutions = [1024, 4096, 8192]
+    results = {}
 
-    t_naive = bench(mandelbrot_naive, *args)
-    t_numpy = bench(mandelbrot_numpy, *args)
-    t_hybrid = bench(mandelbrot_hybrid, *args)
-    t_naive_numba = bench(mandelbrot_naive_numba, *args)
-    t_mandelbrot_parallel = bench(mandelbrot_parallel, *args_parallel)
-    t_mandelbrot_dask_local = bench(mandelbrot_dask, *args_dask_local)
-    t_mandelbrot_dask_strato = bench(mandelbrot_dask_strato, *args_dask_strato)
+    for res in resolutions:
+        print(f"\n--- Benchmarking {res}x{res} ---")
+        width, height = res, res
 
-    print(f"Naive: {t_naive:.3f} seconds")
-    print(f"NumPy: {t_numpy:.3f} seconds, speedup: {t_naive / t_numpy :.2f}x")
-    print(f"Hybrid: {t_hybrid:.3f} seconds, speedup: {t_naive / t_hybrid :.2f}x")
-    print(
-        f"Numba: {t_naive_numba:.3f} seconds, speedup: {t_naive / t_naive_numba :.2f}x"
-    )
-    print(
-        f"Numba + Parallel: {t_mandelbrot_parallel:.3f} seconds, speedup: {t_naive / t_mandelbrot_parallel :.2f}x"
-    )
-    print(
-        f"Dask local: {t_mandelbrot_dask_local:.3f} seconds, speedup: {t_naive / t_mandelbrot_dask_local :.2f}x"
-    )
-    print(
-        f"Dask strato: {t_mandelbrot_dask_strato:.3f} seconds, speedup: {t_naive / t_mandelbrot_dask_strato :.2f}x"
-    )
+        args = (-2, 1, -1.5, 1.5, width, height)
+        args_parallel = (width, -2, 1, -1.5, 1.5, 100, n_workers, n_workers * 2)
+        args_dask_local = (width, -2, 1, -1.5, 1.5, 100, 4)
+        args_dask_strato = (width, -2, 1, -1.5, 1.5, 100, 32)
+
+        t_naive = bench(mandelbrot_naive, *args)
+        t_numpy = bench(mandelbrot_numpy, *args)
+        t_hybrid = bench(mandelbrot_hybrid, *args)
+        t_naive_numba = bench(mandelbrot_naive_numba, *args)
+        t_parallel = bench(mandelbrot_parallel, *args_parallel)
+        t_dask_local = bench(mandelbrot_dask, *args_dask_local)
+        t_dask_strato = bench(mandelbrot_dask_strato, *args_dask_strato)
+
+        results[res] = {
+            "Naive": t_naive,
+            "NumPy": t_numpy,
+            "Hybrid": t_hybrid,
+            "Numba": t_naive_numba,
+            "Numba + Parallel": t_parallel,
+            "Dask local": t_dask_local,
+            "Dask strato": t_dask_strato,
+        }
+
+    # Build output string
+    methods = list(next(iter(results.values())).keys())
+    col_w = 18
+
+    lines = []
+    lines.append("===== BENCHMARK RESULTS (median seconds) =====")
+    header = f"{'Method':<20}" + "".join(f"{f'{r}x{r}':>{col_w}}" for r in resolutions)
+    lines.append(header)
+    lines.append("-" * len(header))
+    for method in methods:
+        row = f"{method:<20}" + "".join(
+            f"{results[r][method]:>{col_w}.3f}" for r in resolutions
+        )
+        lines.append(row)
+
+    lines.append("\n===== SPEEDUP (relative to Naive) =====")
+    lines.append(header)
+    lines.append("-" * len(header))
+    for method in methods:
+        row = f"{method:<20}" + "".join(
+            f"{results[r]['Naive'] / results[r][method]:>{col_w}.2f}x"
+            for r in resolutions
+        )
+        lines.append(row)
+
+    output = "\n".join(lines)
+
+    # Print to console
+    print("\n\n" + output)
+
+    # Save to file
+    with open("benchmark_results.txt", "w") as f:
+        f.write(output)
+
+    print("\nResults saved to benchmark_results.txt")

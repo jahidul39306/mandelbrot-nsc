@@ -1,0 +1,21 @@
+===== BENCHMARK RESULTS (median seconds) =====
+Method                       1024x1024
+--------------------------------------
+Naive                            3.733
+NumPy                            0.709
+Hybrid                           1.272
+Numba                            0.047
+Numba + Parallel                 0.125
+Dask local                       0.046
+Dask strato                      0.060
+
+===== SPEEDUP (relative to Naive) =====
+Method                       1024x1024
+--------------------------------------
+Naive                             1.00x
+NumPy                             5.27x
+Hybrid                            2.93x
+Numba                            79.87x
+Numba + Parallel                 29.97x
+Dask local                       81.27x
+Dask strato                      62.61x
