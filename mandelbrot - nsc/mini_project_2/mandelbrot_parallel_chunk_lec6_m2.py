@@ -63,7 +63,7 @@ def measure_time(fn, runs=3):
 
 if __name__ == "__main__":
 
-    N, max_iter = 1024, 100
+    N, max_iter = 4096, 100
     X_MIN, X_MAX, Y_MIN, Y_MAX = -2.5, 1.0, -1.25, 1.25
 
     # Start cluster ONCE
