@@ -22,7 +22,7 @@ def bench(fn, *args, runs=5):
 
 if __name__ == "__main__":
     n_workers = 8
-    resolutions = [1024, 4096, 8192]
+    resolutions = [1024, 4096]
     results = {}
 
     for res in resolutions:
@@ -31,7 +31,7 @@ if __name__ == "__main__":
 
         args = (-2, 1, -1.5, 1.5, width, height)
         args_parallel = (width, -2, 1, -1.5, 1.5, 100, n_workers, n_workers * 2)
-        args_dask_local = (width, -2, 1, -1.5, 1.5, 100, 4)
+        args_dask_local = (width, -2, 1, -1.5, 1.5, 100, 4) # 4 is the best n_chunks for dask local with 8 workers
         args_dask_strato = (width, -2, 1, -1.5, 1.5, 100, 32)
 
         t_naive = bench(mandelbrot_naive, *args)
