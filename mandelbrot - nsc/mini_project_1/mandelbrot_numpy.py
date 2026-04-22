@@ -12,12 +12,13 @@ def mandelbrot_numpy(xmin=-2.0, xmax=1.0, ymin=-1.5, ymax=1.5, width=1024, heigh
     C = X + 1j * Y
 
     Z = np.zeros_like(C)
-    M = np.zeros(C.shape, dtype=int)
+    M = np.full(C.shape, max_iter, dtype=int)
 
     for n in range(max_iter):
         mask = np.abs(Z) <= 2
         Z[mask] = Z[mask] ** 2 + C[mask]
-        M[mask] = n
+        escaped = (np.abs(Z) > 2) & (M == max_iter)
+        M[escaped] = n + 1
     return M
 
 def benchmark_numpy():
