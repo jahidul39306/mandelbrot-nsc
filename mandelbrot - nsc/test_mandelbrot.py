@@ -3,7 +3,10 @@ import pytest
 from mini_project_1.mandelbrot_naive import mandelbrot_naive
 from mini_project_1.mandelbrot_numpy import mandelbrot_numpy
 from mini_project_1.mandelbrot_naive_numba import mandelbrot_naive_numba as mandelbrot_numba
-from mini_project_2.mandelbrot_parallel_chunk_lec5_m3 import mandelbrot_chunk, mandelbrot_parallel, mandelbrot_pixel, mandelbrot_serial
+from mini_project_2.mandelbrot_parallel_chunk_lec5_m3 import mandelbrot_chunk
+from mini_project_2.mandelbrot_parallel_chunk_lec5_m3 import mandelbrot_parallel
+from mini_project_2.mandelbrot_parallel_chunk_lec5_m3 import mandelbrot_pixel
+from mini_project_2.mandelbrot_parallel_chunk_lec5_m3 import mandelbrot_serial
 from dask.distributed import Client, LocalCluster
 
 # naive vs numpy
