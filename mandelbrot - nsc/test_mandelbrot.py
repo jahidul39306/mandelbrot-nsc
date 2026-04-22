@@ -4,6 +4,7 @@ from mini_project_1.mandelbrot_naive import mandelbrot_naive
 from mini_project_1.mandelbrot_numpy import mandelbrot_numpy
 from mini_project_1.mandelbrot_naive_numba import mandelbrot_naive_numba as mandelbrot_numba
 from mini_project_2.mandelbrot_parallel_chunk_lec5_m3 import mandelbrot_chunk, mandelbrot_parallel, mandelbrot_pixel, mandelbrot_serial
+from dask.distributed import Client, LocalCluster
 
 # naive vs numpy
 def test_numpy_matches_naive():
@@ -68,3 +69,21 @@ def test_parallel_consistency(N):
     parallel = mandelbrot_parallel(N, *args, n_workers=2, n_chunks=4)
 
     assert np.array_equal(serial, parallel)
+    
+# dask
+def test_dask():
+    cluster = LocalCluster(n_workers=2, threads_per_worker=1)
+    client = Client(cluster)
+
+    N = 32
+    args = (-2.0, 1.0, -1.5, 1.5, 20)
+
+    expected = mandelbrot_chunk(0, N, N, *args)
+
+    future = client.submit(mandelbrot_chunk, 0, N, N, *args)
+    result = client.gather(future)
+
+    assert np.array_equal(expected, result)
+
+    client.close()
+    cluster.close()
