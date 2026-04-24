@@ -3,12 +3,31 @@ from dask import delayed
 from dask.distributed import Client, LocalCluster
 import dask
 import numpy as np
-import time, statistics
+import time
+import statistics
 import matplotlib.pyplot as plt
+from typing import Callable, List, Tuple
 
 
 @njit(cache=True)
-def mandelbrot_pixel(c_real, c_imag, max_iter):
+def mandelbrot_pixel(c_real: float, c_imag: float, max_iter: int) -> int:
+    """
+    Compute the number of iterations for a single point in the Mandelbrot set.
+
+    Parameters
+    ----------
+    c_real : float
+        Real part of the complex number.
+    c_imag : float
+        Imaginary part of the complex number.
+    max_iter : int
+        Maximum number of iterations.
+
+    Returns
+    -------
+    int
+        Number of iterations before divergence, or max_iter if bounded.
+    """
     z_real = z_imag = 0.0
     for i in range(max_iter):
         z_sq = z_real * z_real + z_imag * z_imag
@@ -22,7 +41,43 @@ def mandelbrot_pixel(c_real, c_imag, max_iter):
 
 
 @njit(cache=True)
-def mandelbrot_chunk(row_start, row_end, N, x_min, x_max, y_min, y_max, max_iter):
+def mandelbrot_chunk(
+    row_start: int,
+    row_end: int,
+    N: int,
+    x_min: float,
+    x_max: float,
+    y_min: float,
+    y_max: float,
+    max_iter: int,
+) -> np.ndarray:
+    """
+    Compute a chunk of rows of the Mandelbrot set.
+
+    Parameters
+    ----------
+    row_start : int
+        Starting row index (inclusive).
+    row_end : int
+        Ending row index (exclusive).
+    N : int
+        Resolution (width and height).
+    x_min : float
+        Minimum x-coordinate.
+    x_max : float
+        Maximum x-coordinate.
+    y_min : float
+        Minimum y-coordinate.
+    y_max : float
+        Maximum y-coordinate.
+    max_iter : int
+        Maximum number of iterations.
+
+    Returns
+    -------
+    np.ndarray
+        2D array of iteration counts for the chunk.
+    """
     out = np.empty((row_end - row_start, N), dtype=np.int32)
     dx = (x_max - x_min) / N
     dy = (y_max - y_min) / N
@@ -35,7 +90,40 @@ def mandelbrot_chunk(row_start, row_end, N, x_min, x_max, y_min, y_max, max_iter
     return out
 
 
-def mandelbrot_dask(N, x_min, x_max, y_min, y_max, max_iter, n_chunks):
+def mandelbrot_dask(
+    N: int,
+    x_min: float,
+    x_max: float,
+    y_min: float,
+    y_max: float,
+    max_iter: int,
+    n_chunks: int,
+) -> np.ndarray:
+    """
+    Compute the Mandelbrot set using Dask parallelism.
+
+    Parameters
+    ----------
+    N : int
+        Resolution (width and height).
+    x_min : float
+        Minimum x-coordinate.
+    x_max : float
+        Maximum x-coordinate.
+    y_min : float
+        Minimum y-coordinate.
+    y_max : float
+        Maximum y-coordinate.
+    max_iter : int
+        Maximum number of iterations.
+    n_chunks : int
+        Number of chunks to divide the computation into.
+
+    Returns
+    -------
+    np.ndarray
+        Full Mandelbrot set as a 2D array.
+    """
     chunk_size = max(1, N // n_chunks)
     tasks, row = [], 0
 
@@ -52,7 +140,7 @@ def mandelbrot_dask(N, x_min, x_max, y_min, y_max, max_iter, n_chunks):
     return np.vstack(parts)
 
 
-def measure_time(fn, runs=3):
+def measure_time(fn: Callable[[], None], runs: int = 3) -> float:
     times = []
     for _ in range(runs):
         t0 = time.perf_counter()
@@ -61,31 +149,28 @@ def measure_time(fn, runs=3):
     return statistics.median(times)
 
 
-if __name__ == "__main__":
-
+def run_experiment() -> None:
+    """
+    Run chunk-scaling experiment and plot results.
+    """
     N, max_iter = 4096, 100
     X_MIN, X_MAX, Y_MIN, Y_MAX = -2.5, 1.0, -1.25, 1.25
 
-    # Start cluster ONCE
     cluster = LocalCluster(n_workers=8, threads_per_worker=1)
     client = Client(cluster)
 
-    # Warm-up Numba in ALL workers
+    # Warm-up
     client.run(lambda: mandelbrot_chunk(0, 8, 8, X_MIN, X_MAX, Y_MIN, Y_MAX, 10))
 
-    # ---------------------------
-    # Sweep chunk counts
-    # ---------------------------
-    T1 = None
+    T1: float | None = None
     chunk_values = [1, 2, 4, 8, 16, 32, 64, 128]
 
-    results = []
+    results: List[Tuple[int, float, float, float, float]] = []
 
     print("n_chunks | time (s) | vs 1x | speedup | LIF")
     print("-" * 50)
 
     for n_chunks in chunk_values:
-
         times = []
         for _ in range(3):
             t0 = time.perf_counter()
@@ -100,25 +185,18 @@ if __name__ == "__main__":
 
         speedup = T1 / Tp
         vs1x = Tp / T1
-        p = 8  # number of workers
+        p = 8
 
-        # LIF formula
         LIF = p * (Tp / T1) - 1
 
         results.append((n_chunks, Tp, vs1x, speedup, LIF))
 
         print(f"{n_chunks:8d} | {Tp:8.4f} | {vs1x:6.3f} | {speedup:7.3f} | {LIF:6.3f}")
 
-    # ---------------------------
-    # Find optimal
-    # ---------------------------
     best = min(results, key=lambda x: x[1])
     print("\nOptimal:")
     print(f"n_chunks = {best[0]}, time = {best[1]:.4f}, LIF = {best[4]:.4f}")
 
-    # ---------------------------
-    # Plot
-    # ---------------------------
     x = [r[0] for r in results]
     y = [r[1] for r in results]
 
@@ -135,3 +213,7 @@ if __name__ == "__main__":
 
     client.close()
     cluster.close()
+
+
+if __name__ == "__main__":
+    run_experiment()
