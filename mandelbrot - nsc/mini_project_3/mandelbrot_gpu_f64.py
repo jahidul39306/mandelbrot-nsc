@@ -15,8 +15,8 @@ __kernel void mandelbrot(
     // Prevent out-of-bounds
     if (col >= N || row >= N) return;
     
-    float c_real = x_min + col * (x_max - x_min) / (float)(N - 1);
-    float c_imag = y_min + row * (y_max - y_min) / (float)(N - 1);  
+    float c_real = x_min + col * (x_max - x_min) / (float)N;
+    float c_imag = y_min + row * (y_max - y_min) / (float)N;  
     
     // Mandelbrot iteration
     float zr = 0.0f, zi = 0.0f;
@@ -32,11 +32,7 @@ __kernel void mandelbrot(
 }
 """
 
-platforms = cl.get_platforms()
-gpu_platform = [p for p in platforms if "Intel" in p.name][0]
-gpu_devices = gpu_platform.get_devices(device_type=cl.device_type.GPU)
-
-ctx = cl.Context(devices=gpu_devices)
+ctx = cl.create_some_context(interactive=False)
 queue = cl.CommandQueue(ctx)
 prog = cl.Program(ctx, KERNEL_SRC).build()
 
@@ -65,6 +61,23 @@ prog.mandelbrot(
 )
 queue.finish()
 
+# Execution
+prog.mandelbrot(
+    queue,
+    (N, N),
+    None,
+    image_dev,
+    np.float32(X_MIN),
+    np.float32(X_MAX),
+    np.float32(Y_MIN),
+    np.float32(Y_MAX),
+    np.int32(N),
+    np.int32(MAX_ITER),
+)
+
+cl.enqueue_copy(queue, image, image_dev)
+queue.finish()
+
 # --- Time the real run ---
 t0 = time.perf_counter()
 prog.mandelbrot(
@@ -86,7 +99,6 @@ cl.enqueue_copy(queue, image, image_dev)
 queue.finish()
 
 print(f"GPU {N}x{N}: {elapsed*1e3:.1f} ms")
-
 plt.imshow(image, cmap="hot", origin="lower")
 plt.axis("off")
 plt.savefig("mandelbrot_gpu.png", dpi=150, bbox_inches="tight")
