@@ -1,0 +1,100 @@
+2026-03-01 8cd2a4f plotted figure for diffrent precission
+
+ mandelbrot - nsc/mandelbrot_numba_typed.py |  24 ++++++++++++++++++++----
+ mandelbrot - nsc/precision_comparison.png  | Bin 0 -> 83674 bytes
+ 2 files changed, 20 insertions(+), 4 deletions(-)
+2026-03-01 6f02948 tried diffrent precission, float32 is slower than float64
+
+ mandelbrot - nsc/mandelbrot_numba_typed.py | 37 ++++++++++++++++++++++++++++++
+ 1 file changed, 37 insertions(+)
+2026-03-01 06efc23 added benchmark file, to compare all versions
+
+ mandelbrot - nsc/.gitignore                        |   3 +-
+ .../__pycache__/mandelbrot_naive.cpython-311.pyc   | Bin 2455 -> 2467 bytes
+ mandelbrot - nsc/benchmark.py                      |  31 +++++++++++++++++++++
+ ...ndelbrot_numba.py => mandelbrot_naive_numba.py} |   0
+ 4 files changed, 33 insertions(+), 1 deletion(-)
+2026-03-01 a0e9555 compared mandelbroth_hybrid and mandelbrot_numba version, result: numba is 22.9 times faster
+
+ .../__pycache__/mandelbrot_naive.cpython-311.pyc   | Bin 2459 -> 2455 bytes
+ .../__pycache__/mandelbrot_numpy.cpython-311.pyc   | Bin 2657 -> 2658 bytes
+ mandelbrot - nsc/mandelbrot_naive.py               |   5 +-
+ mandelbrot - nsc/mandelbrot_naive.py.lprof         | Bin 236 -> 236 bytes
+ mandelbrot - nsc/mandelbrot_numba.py               |  82 +++++++++++++++++++++
+ mandelbrot - nsc/mandelbrot_numpy.py               |   2 +-
+ mandelbrot - nsc/naive_profile.prof                | Bin 2637 -> 2637 bytes
+ mandelbrot - nsc/numpy_profile.prof                | Bin 5367 -> 5367 bytes
+ 8 files changed, 85 insertions(+), 4 deletions(-)
+2026-02-26 16a4937 ompleted line profiler
+
+ mandelbrot - nsc/mandelbrot_naive.py       |   7 +++----
+ mandelbrot - nsc/mandelbrot_naive.py.lprof | Bin 0 -> 236 bytes
+ mandelbrot - nsc/mandelbrot_numpy.py       |   4 ++--
+ mandelbrot - nsc/mandelbrot_numpy.py.lprof | Bin 0 -> 258 bytes
+ 4 files changed, 5 insertions(+), 6 deletions(-)
+2026-02-26 76dad50 completed function level profiling
+
+ .../__pycache__/mandelbrot_naive.cpython-311.pyc   | Bin 0 -> 2459 bytes
+ .../__pycache__/mandelbrot_numpy.cpython-311.pyc   | Bin 0 -> 2657 bytes
+ mandelbrot - nsc/function_level_profiling.py       |   9 ++++--
+ mandelbrot - nsc/mandelbrot_naive.py               |  32 +++++++++----------
+ mandelbrot - nsc/mandelbrot_numpy.py               |  35 +++++++++++----------
+ mandelbrot - nsc/naive_profile.prof                | Bin 0 -> 2637 bytes
+ mandelbrot - nsc/numpy_profile.prof                | Bin 0 -> 5367 bytes
+ 7 files changed, 41 insertions(+), 35 deletions(-)
+2026-02-26 37ca264 files name and function name changed, for clean code
+
+ mandelbrot - nsc/function_level_profiling.py                  |  6 ++++++
+ mandelbrot - nsc/mandelbrot_naive.py                          | 11 ++++++++---
+ .../{mandelbrot_vectorize.py => mandelbrot_numpy.py}          | 11 ++++++++---
+ 3 files changed, 22 insertions(+), 6 deletions(-)
+2026-02-19 780907e used diffrent resolutions to compare the computation time
+
+ mandelbrot - nsc/mandelbrot_vectorize.py |  36 ++++++++++++++++++++++---------
+ mandelbrot - nsc/vectorized_1024.png     | Bin 0 -> 68665 bytes
+ mandelbrot - nsc/vectorized_2048.png     | Bin 0 -> 72314 bytes
+ mandelbrot - nsc/vectorized_4096.png     | Bin 0 -> 72886 bytes
+ mandelbrot - nsc/vectorized_512.png      | Bin 0 -> 67329 bytes
+ 5 files changed, 26 insertions(+), 10 deletions(-)
+2026-02-19 7841717 compared the row and column wise operation using numpy and fortan array
+
+ mandelbrot - nsc/.gitignore                |  2 ++
+ mandelbrot - nsc/mandelbrot_naive.py       | 22 +++++++++++---------
+ mandelbrot - nsc/mandelbrot_vectorize.py   | 15 +++++++-------
+ mandelbrot - nsc/memory_access_patterns.py | 32 ++++++++++++++++++++++++++++++
+ 4 files changed, 55 insertions(+), 16 deletions(-)
+2026-02-19 ef06b4d after using numpy time taken is 1.04 compare to naive 7.82 seconds
+
+ mandelbrot - nsc/mandelbrot_vectorize.py | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+2026-02-19 506486c used meshgrid for vectorized mandelbrot
+
+ mandelbrot - nsc/{mandelbrot.py => mandelbrot_naive.py} | 4 ++--
+ mandelbrot - nsc/mandelbrot_vectorize.py                | 9 +++++++++
+ 2 files changed, 11 insertions(+), 2 deletions(-)
+2026-02-05 61140f2 implemented the naive method
+
+ mandelbrot - nsc/Figure_1.png  | Bin 0 -> 65982 bytes
+ mandelbrot - nsc/mandelbrot.py |  15 ++++++---------
+ 2 files changed, 6 insertions(+), 9 deletions(-)
+2026-02-05 88f5ddc generated how much time it took
+
+ mandelbrot - nsc/mandelbrot.py | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+2026-02-05 8225025 added the compute_manderplot function
+
+ mandelbrot - nsc/mandelbrot.py | 34 +++++++++++++++++++++++++++-------
+ 1 file changed, 27 insertions(+), 7 deletions(-)
+2026-02-05 d18c85c Added the mandelbrot_point function
+
+ mandelbrot - nsc/mandelbrot.py | 31 +++++++++++++++++--------------
+ 1 file changed, 17 insertions(+), 14 deletions(-)
+2026-02-05 7258688 Add mandelbrot skeleton
+
+ mandelbrot - nsc/mandelbrot.py | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+2026-02-05 5a18022 environment specification
+
+ mandelbrot - nsc/environment.yml | 223 +++++++++++++++++++++++++++++++++++++++
+ mandelbrot - nsc/test_install.py |  29 +++++
+ 2 files changed, 252 insertions(+)

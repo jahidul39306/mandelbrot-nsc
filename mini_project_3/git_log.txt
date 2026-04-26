@@ -1,0 +1,369 @@
+2026-04-26 39fb223 docstring added to all the file of MP2
+
+ .../mini_project_2/mandelbrot_lec7_m1.py           | 164 +++++++++-----
+ .../mandelbrot_parallel_chunk_lec5_m1.py           | 214 +++++++++++++++---
+ .../mandelbrot_parallel_chunk_lec5_m2.py           | 208 ++++++++++++++---
+ .../mandelbrot_parallel_chunk_lec5_m3.py           | 246 ++++++++++++++++++---
+ .../mandelbrot_parallel_chunk_lec6_m1.py           | 141 ++++++++++--
+ .../mini_project_2/mandelbrot_parallel_lec4.py     | 214 +++++++++++++-----
+ 6 files changed, 975 insertions(+), 212 deletions(-)
+2026-04-26 5220793 docstring added to all the file of MP1
+
+ mandelbrot - nsc/git_log.txt                       |   8 +
+ .../mini_project_1/mandelbrot_naive.py             | 121 +++++++++++----
+ .../mini_project_1/mandelbrot_naive_numba.py       | 162 +++++++++++++++++----
+ .../mini_project_1/mandelbrot_numba_typed.py       | 100 ++++++++++---
+ .../mini_project_1/mandelbrot_numpy.py             | 100 ++++++++++---
+ mandelbrot - nsc/mini_project_3/bar_chart.py       |   2 +-
+ mandelbrot - nsc/mini_project_3/git_log.txt        |   8 +
+ .../mini_project_3/mandelbrot_speedup.png          | Bin 134319 -> 135811 bytes
+ .../mini_project_3/nsc_mini_3_report.pdf           | Bin 0 -> 608601 bytes
+ .../mini_project_3/speedup_bar_chart.png           | Bin 71725 -> 72834 bytes
+ 10 files changed, 403 insertions(+), 98 deletions(-)
+2026-04-26 192b7d3 final commit of nsc2026
+
+ mandelbrot - nsc/git_log.txt                | 339 ++++++++++++++++++++++++++++
+ mandelbrot - nsc/mini_project_3/git_log.txt | 339 ++++++++++++++++++++++++++++
+ mandelbrot - nsc/mini_project_3/readme.md   | 117 ++++++++++
+ mandelbrot - nsc/readme.md                  | 117 ++++++++++
+ mandelbrot - nsc/speedup_bar_chart.png      | Bin 0 -> 71725 bytes
+ 5 files changed, 912 insertions(+)
+2026-04-26 21317be created bar chart for all the speedups
+
+ mandelbrot - nsc/mini_project_3/bar_chart.py       |  52 +++++++++++++++++++++
+ .../mini_project_3/mandelbrot_cpu_f64.png          | Bin 74855 -> 71525 bytes
+ mandelbrot - nsc/mini_project_3/mandelbrot_gpu.png | Bin 74879 -> 71572 bytes
+ mandelbrot - nsc/mini_project_3/mandelbrot_gpu.py  |   2 +-
+ .../mini_project_3/mandelbrot_gpu_f64.py           |   2 +-
+ .../mini_project_3/mandelbrot_speedup.png          | Bin 0 -> 134319 bytes
+ .../mini_project_3/speedup_bar_chart.png           | Bin 0 -> 71725 bytes
+ 7 files changed, 54 insertions(+), 2 deletions(-)
+2026-04-26 9677a4b flat64 computation done on CPU
+
+ .../mini_project_3/mandelbrot_cpu_f64.png          | Bin 0 -> 74855 bytes
+ mandelbrot - nsc/mini_project_3/mandelbrot_gpu.png | Bin 71572 -> 74879 bytes
+ mandelbrot - nsc/mini_project_3/mandelbrot_gpu.py  |   2 +-
+ .../mini_project_3/mandelbrot_gpu_f64.png          | Bin 0 -> 73891 bytes
+ .../mini_project_3/mandelbrot_gpu_f64.py           |  73 ++++++++++-----------
+ 5 files changed, 37 insertions(+), 38 deletions(-)
+2026-04-26 21fe4fa some changes made in the mp3m1 code for better result
+
+ mandelbrot - nsc/mini_project_3/mandelbrot_gpu.png | Bin 71863 -> 71572 bytes
+ mandelbrot - nsc/mini_project_3/mandelbrot_gpu.py  |  27 ++----
+ .../mini_project_3/mandelbrot_gpu_f64.py           | 104 +++++++++++++++++++++
+ 3 files changed, 112 insertions(+), 19 deletions(-)
+2026-04-26 1cc41c8 completed mp3 m1, gpu computated mandelbrot
+
+ mandelbrot - nsc/mini_project_3/mandelbrot_gpu.png | Bin 0 -> 71863 bytes
+ mandelbrot - nsc/mini_project_3/mandelbrot_gpu.py  | 103 +++++++++++++++++++++
+ 2 files changed, 103 insertions(+)
+2026-04-24 6f1fff3 dask local version code, has changed for dostring and type hints
+
+ .../mandelbrot_parallel_chunk_lec6_m2.py           | 128 +++++++++++++++++----
+ 1 file changed, 105 insertions(+), 23 deletions(-)
+2026-04-22 74eab67 tried diffrent import approach to see how test reacts
+
+ lecture_2/L02_comparch_multi-core.pdf         | Bin 0 -> 1056897 bytes
+ lecture_3/High_Performance_Python.pdf         | Bin 0 -> 10970403 bytes
+ lecture_3/L03_Optimization_Numba.pdf          | Bin 0 -> 538608 bytes
+ lecture_4/L04_ParallelComputing1.pdf          | Bin 0 -> 932188 bytes
+ lecture_4/Optimizing_Parallel_Granularity.pdf | Bin 0 -> 11828864 bytes
+ lecture_5/L05_ParallelComputing2.pdf          | Bin 0 -> 1002427 bytes
+ lecture_5/Optimizing_Parallel_Granularity.pdf | Bin 0 -> 11828864 bytes
+ lecture_6/L06_DaskLocal.pdf                   | Bin 0 -> 1074507 bytes
+ lecture_8/L08_ComputerArithmetic.pdf          | Bin 0 -> 646919 bytes
+ lecture_9/L09_Testing.pdf                     | Bin 0 -> 928564 bytes
+ mandelbrot - nsc/.coverage                    | Bin 53248 -> 53248 bytes
+ mandelbrot - nsc/test_mandelbrot.py           |   5 ++++-
+ 12 files changed, 4 insertions(+), 1 deletion(-)
+2026-04-22 44ac320 test included for dask
+
+ mandelbrot - nsc/.coverage          | Bin 0 -> 53248 bytes
+ mandelbrot - nsc/test_mandelbrot.py |  21 ++++++++++++++++++++-
+ 2 files changed, 20 insertions(+), 1 deletion(-)
+2026-04-22 f1edac2 some  bug fixed after testing
+
+ .../mini_project_1/mandelbrot_numpy.py             |  5 +-
+ .../mandelbrot_parallel_chunk_lec5_m3.py           | 11 ++--
+ mandelbrot - nsc/test_mandelbrot.py                | 70 ++++++++++++++++++++++
+ 3 files changed, 80 insertions(+), 6 deletions(-)
+2026-04-22 cc03b8f sensetive region found using sensetivity map
+
+ .../mini_project_3/mandelbrot_lec8_m2.py           |  52 +++++++++++++++++++++
+ .../mini_project_3/sensetivity_map.png             | Bin 0 -> 66263 bytes
+ 2 files changed, 52 insertions(+)
+2026-04-22 20aa202 trajectory divergence completed
+
+ .../mini_project_3/mandelbrot_lec8_m1.py           |  53 ++++++++++++++++-----
+ .../trajectory_divergence and escape_count_map.png | Bin 0 -> 102518 bytes
+ 2 files changed, 40 insertions(+), 13 deletions(-)
+2026-04-15 28f3f23 mini project 3 file structure created and compared two precissions divergence
+
+ mandelbrot - nsc/mini_project_2/git_log            | 119 +++++++++++++++++++++
+ .../mini_project_2/nsc_mini_2_report.pdf           | Bin 0 -> 271676 bytes
+ .../mini_project_3/mandelbrot_lec8_m1.py           |  47 ++++++++
+ .../mandelbrot_trajectory_divergence.png           | Bin 0 -> 64322 bytes
+ mandelbrot - nsc/ubuntu@10.92.0.47                 |  68 ------------
+ 5 files changed, 166 insertions(+), 68 deletions(-)
+2026-04-06 81ae834 benchmarked dask local again on 4096 resolution
+
+ mandelbrot - nsc/benchmark_results.txt | 28 +++++++++++++---------------
+ 1 file changed, 13 insertions(+), 15 deletions(-)
+2026-04-01 c020a89 fixed the chunk size for strato local
+
+ mandelbrot - nsc/benchmark.py                           |   4 ++--
+ mandelbrot - nsc/dask_chunk_sweep.png                   | Bin 0 -> 23448 bytes
+ mandelbrot - nsc/dask_local_chunk_sweep.png             | Bin 0 -> 23448 bytes
+ .../mini_project_2/mandelbrot_parallel_chunk_lec6_m2.py |   2 +-
+ 4 files changed, 3 insertions(+), 3 deletions(-)
+2026-04-01 397faf1 benchmarking without 8192*8192 and finding the best chunk size for lec_7
+
+ mandelbrot - nsc/benchmark.py                      |  4 +-
+ .../mini_project_2/mandelbrot_lec7_m1.py           | 50 ++++++++++++++--------
+ 2 files changed, 35 insertions(+), 19 deletions(-)
+2026-03-31 1cc9047 changed the benchmark file for 3 diffrenet resolution and changed the chunk size for the starto
+
+ mandelbrot - nsc/benchmark.py          | 117 ++++++++++++++++++---------------
+ mandelbrot - nsc/benchmark_results.txt |  21 ++++++
+ 2 files changed, 85 insertions(+), 53 deletions(-)
+2026-03-31 54ecf4a changes in te benchmark file for 4096
+
+ mandelbrot - nsc/benchmark.py | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
+2026-03-31 0cd7a0b checking all package versions are same
+
+ .../mini_project_2/mandelbrot_lec7_m1.py           |  6 +-
+ mandelbrot - nsc/ubuntu@10.92.0.47                 | 68 ++++++++++++++++++++++
+ 2 files changed, 73 insertions(+), 1 deletion(-)
+2026-03-31 62bc150 file location changed
+
+ mandelbrot - nsc/{ => mini_project_2}/mandelbrot_lec7_m1.py | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+2026-03-26 f0531f0 changes made for the strato
+
+ mandelbrot - nsc/mandelbrot_lec7_m1.py | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+2026-03-26 7b9f617 created the file for the lecture 7
+
+ mandelbrot - nsc/mandelbrot_lec7_m1.py | 70 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 70 insertions(+)
+2026-03-25 45198ed lecture 6 milestones completed, but different lecture giving different result
+
+ mandelbrot - nsc/benchmark.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+2026-03-25 fd84382 benchmark with dask local
+
+ mandelbrot - nsc/benchmark.py | 32 +++++++++++++++++++++++++++++---
+ 1 file changed, 29 insertions(+), 3 deletions(-)
+2026-03-25 b9f6e9e lec6_m2: some code cleaning
+
+ .../mini_project_2/dask_chunk_sweep.png            | Bin 30174 -> 25058 bytes
+ .../mini_project_2/dask_chunk_sweep_2.png          | Bin 0 -> 25058 bytes
+ .../mandelbrot_parallel_chunk_lec6_m2.py           |  25 ++++++++-------------
+ 3 files changed, 9 insertions(+), 16 deletions(-)
+2026-03-25 b18a75f lecture 6 milestone 1: bug fixing and correctness check with serial result
+
+ .../mini_project_2/dask_chunk_sweep.png            | Bin 0 -> 30174 bytes
+ .../mandelbrot_parallel_chunk_lec6_m1.py           |  12 +-
+ .../mandelbrot_parallel_chunk_lec6_m2.py           | 144 +++++++++++++++++++++
+ 3 files changed, 154 insertions(+), 2 deletions(-)
+2026-03-19 ccac3c3 first milestone completed
+
+ .../mandelbrot_parallel_chunk_lec6_m1.py           | 62 ++++++++++++++++++++++
+ 1 file changed, 62 insertions(+)
+2026-03-16 fb90837 speed up vs core count implemeted
+
+ .../mini_project_2/ideal vs actual speedup.png     | Bin 0 -> 38193 bytes
+ .../mandelbrot_parallel_chunk_lec5_m3.py           | 141 +++++++++++++++++++++
+ 2 files changed, 141 insertions(+)
+2026-03-16 44bfc17 previous n_workers was correct
+
+ mandelbrot - nsc/benchmark.py                                        | 2 +-
+ mandelbrot - nsc/mini_project_2/mandelbrot_parallel_chunk_lec5_m2.py | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+2026-03-16 c70cfc2 mistake of choosing n_wokers has been resolved
+
+ mandelbrot - nsc/benchmark.py                                        | 3 ++-
+ mandelbrot - nsc/mini_project_2/mandelbrot_parallel_chunk_lec5_m2.py | 2 +-
+ mandelbrot - nsc/mini_project_2/mandelbrot_parallel_chunk_lec5_m3.py | 0
+ 3 files changed, 3 insertions(+), 2 deletions(-)
+2026-03-16 b526fdc benchmark.py file relocated to the parent directory for benchmarking
+
+ mandelbrot - nsc/{mini_project_1 => }/benchmark.py           | 12 +++++++++---
+ .../mini_project_2/mandelbrot_parallel_chunk_lec5_m2.py      |  3 ++-
+ 2 files changed, 11 insertions(+), 4 deletions(-)
+2026-03-16 f604ce3 implemented the code to find the best chunk size
+
+ .../mandelbrot_parallel_chunk_lec5_m2.py           | 107 +++++++++++++++++++++
+ ...rot_parallel.py => mandelbrot_parallel_lec4.py} |   0
+ 2 files changed, 107 insertions(+)
+2026-03-16 0ac3772 renamed the filenames for better tracking with lectures
+
+ ...mandelbrot_parallel_chunk.py => mandelbrot_parallel_chunk_lec5_m1.py} | 1 +
+ mandelbrot - nsc/mini_project_2/mandelbrot_parallel_chunk_lec5_m2.py     | 0
+ 2 files changed, 1 insertion(+)
+2026-03-12 2a9d5a2 code changed, to the same code in every file to verify results properly
+
+ .../mini_project_2/mandelbrot_parallel.py          | 27 +++++++++++-----------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
+2026-03-12 3972792 result matches, also changed the code formation
+
+ .../mini_project_2/mandelbrot_parallel_chunk.py    | 111 +++++++++++++++++++++
+ 1 file changed, 111 insertions(+)
+2026-03-12 d488738 added the the cache=True and created a file for optimal chunk
+
+ mandelbrot - nsc/mini_project_2/mandelbrot_parallel.py       | 4 ++--
+ mandelbrot - nsc/mini_project_2/mandelbrot_parallel_chunk.py | 0
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+2026-03-05 6087c3b generated performance table for each corees (1 to 12)
+
+ .../mini_project_2/mandelbrot_parallel.py          | 31 ++++++++++++++++++++--
+ 1 file changed, 29 insertions(+), 2 deletions(-)
+2026-03-05 02dc9c3 parallel execution is almost 3x than serial execution
+
+ .../mini_project_2/mandelbrot_parallel.py          | 33 ++++++++++++++++++----
+ 1 file changed, 28 insertions(+), 5 deletions(-)
+2026-03-05 808e069 serial execution completed
+
+ .../mini_project_2/mandelbrot_parallel.py          | 47 ++++++++++++++++++++++
+ 1 file changed, 47 insertions(+)
+2026-03-05 4512715 file structure changed for the mini project 2
+
+ .../__pycache__/mandelbrot_naive.cpython-311.pyc   | Bin 2467 -> 0 bytes
+ .../__pycache__/mandelbrot_numpy.cpython-311.pyc   | Bin 2658 -> 0 bytes
+ mandelbrot - nsc/environment.yml                   | 223 ---------------------
+ mandelbrot - nsc/{ => mini_project_1}/Figure_1.png | Bin
+ mandelbrot - nsc/{ => mini_project_1}/benchmark.py |   0
+ .../function_level_profiling.py                    |   0
+ mandelbrot - nsc/{ => mini_project_1}/git_log.txt  |   0
+ .../{ => mini_project_1}/mandelbrot_naive.py       |   0
+ .../{ => mini_project_1}/mandelbrot_naive.py.lprof | Bin
+ .../{ => mini_project_1}/mandelbrot_naive_numba.py |   0
+ .../{ => mini_project_1}/mandelbrot_numba_typed.py |   4 +-
+ .../{ => mini_project_1}/mandelbrot_numpy.py       |   0
+ .../{ => mini_project_1}/mandelbrot_numpy.py.lprof | Bin
+ .../{ => mini_project_1}/memory_access_patterns.py |   0
+ .../{ => mini_project_1}/naive_profile.prof        | Bin
+ .../mini_project_1/nsc_mini_1_report.pdf           | Bin 0 -> 288259 bytes
+ .../{ => mini_project_1}/numpy_profile.prof        | Bin
+ .../{ => mini_project_1}/precision_comparison.png  | Bin
+ .../{ => mini_project_1}/test_install.py           |   0
+ .../{ => mini_project_1}/vectorized_1024.png       | Bin
+ .../{ => mini_project_1}/vectorized_2048.png       | Bin
+ .../{ => mini_project_1}/vectorized_4096.png       | Bin
+ .../{ => mini_project_1}/vectorized_512.png        | Bin
+ .../{ => mini_project_1}/zoomed_f32.png            | Bin
+ .../{ => mini_project_1}/zoomed_f32_2.png          | Bin
+ .../{ => mini_project_1}/zoomed_f64.png            | Bin
+ .../{ => mini_project_1}/zoomed_f64_2.png          | Bin
+ .../mini_project_2/mandelbrot_parallel.py          |   0
+ 28 files changed, 3 insertions(+), 224 deletions(-)
+2026-03-01 63e83de generated git log
+
+ mandelbrot - nsc/git_log.txt               | 100 +++++++++++++++++++++++++++++
+ mandelbrot - nsc/mandelbrot_numba_typed.py |  10 +--
+ mandelbrot - nsc/zoomed_f32.png            | Bin 0 -> 1086 bytes
+ mandelbrot - nsc/zoomed_f32_2.png          | Bin 0 -> 53464 bytes
+ mandelbrot - nsc/zoomed_f64.png            | Bin 0 -> 1188 bytes
+ mandelbrot - nsc/zoomed_f64_2.png          | Bin 0 -> 53020 bytes
+ 6 files changed, 105 insertions(+), 5 deletions(-)
+2026-03-01 8cd2a4f plotted figure for diffrent precission
+
+ mandelbrot - nsc/mandelbrot_numba_typed.py |  24 ++++++++++++++++++++----
+ mandelbrot - nsc/precision_comparison.png  | Bin 0 -> 83674 bytes
+ 2 files changed, 20 insertions(+), 4 deletions(-)
+2026-03-01 6f02948 tried diffrent precission, float32 is slower than float64
+
+ mandelbrot - nsc/mandelbrot_numba_typed.py | 37 ++++++++++++++++++++++++++++++
+ 1 file changed, 37 insertions(+)
+2026-03-01 06efc23 added benchmark file, to compare all versions
+
+ mandelbrot - nsc/.gitignore                        |   3 +-
+ .../__pycache__/mandelbrot_naive.cpython-311.pyc   | Bin 2455 -> 2467 bytes
+ mandelbrot - nsc/benchmark.py                      |  31 +++++++++++++++++++++
+ ...ndelbrot_numba.py => mandelbrot_naive_numba.py} |   0
+ 4 files changed, 33 insertions(+), 1 deletion(-)
+2026-03-01 a0e9555 compared mandelbroth_hybrid and mandelbrot_numba version, result: numba is 22.9 times faster
+
+ .../__pycache__/mandelbrot_naive.cpython-311.pyc   | Bin 2459 -> 2455 bytes
+ .../__pycache__/mandelbrot_numpy.cpython-311.pyc   | Bin 2657 -> 2658 bytes
+ mandelbrot - nsc/mandelbrot_naive.py               |   5 +-
+ mandelbrot - nsc/mandelbrot_naive.py.lprof         | Bin 236 -> 236 bytes
+ mandelbrot - nsc/mandelbrot_numba.py               |  82 +++++++++++++++++++++
+ mandelbrot - nsc/mandelbrot_numpy.py               |   2 +-
+ mandelbrot - nsc/naive_profile.prof                | Bin 2637 -> 2637 bytes
+ mandelbrot - nsc/numpy_profile.prof                | Bin 5367 -> 5367 bytes
+ 8 files changed, 85 insertions(+), 4 deletions(-)
+2026-02-26 16a4937 ompleted line profiler
+
+ mandelbrot - nsc/mandelbrot_naive.py       |   7 +++----
+ mandelbrot - nsc/mandelbrot_naive.py.lprof | Bin 0 -> 236 bytes
+ mandelbrot - nsc/mandelbrot_numpy.py       |   4 ++--
+ mandelbrot - nsc/mandelbrot_numpy.py.lprof | Bin 0 -> 258 bytes
+ 4 files changed, 5 insertions(+), 6 deletions(-)
+2026-02-26 76dad50 completed function level profiling
+
+ .../__pycache__/mandelbrot_naive.cpython-311.pyc   | Bin 0 -> 2459 bytes
+ .../__pycache__/mandelbrot_numpy.cpython-311.pyc   | Bin 0 -> 2657 bytes
+ mandelbrot - nsc/function_level_profiling.py       |   9 ++++--
+ mandelbrot - nsc/mandelbrot_naive.py               |  32 +++++++++----------
+ mandelbrot - nsc/mandelbrot_numpy.py               |  35 +++++++++++----------
+ mandelbrot - nsc/naive_profile.prof                | Bin 0 -> 2637 bytes
+ mandelbrot - nsc/numpy_profile.prof                | Bin 0 -> 5367 bytes
+ 7 files changed, 41 insertions(+), 35 deletions(-)
+2026-02-26 37ca264 files name and function name changed, for clean code
+
+ mandelbrot - nsc/function_level_profiling.py                  |  6 ++++++
+ mandelbrot - nsc/mandelbrot_naive.py                          | 11 ++++++++---
+ .../{mandelbrot_vectorize.py => mandelbrot_numpy.py}          | 11 ++++++++---
+ 3 files changed, 22 insertions(+), 6 deletions(-)
+2026-02-19 780907e used diffrent resolutions to compare the computation time
+
+ mandelbrot - nsc/mandelbrot_vectorize.py |  36 ++++++++++++++++++++++---------
+ mandelbrot - nsc/vectorized_1024.png     | Bin 0 -> 68665 bytes
+ mandelbrot - nsc/vectorized_2048.png     | Bin 0 -> 72314 bytes
+ mandelbrot - nsc/vectorized_4096.png     | Bin 0 -> 72886 bytes
+ mandelbrot - nsc/vectorized_512.png      | Bin 0 -> 67329 bytes
+ 5 files changed, 26 insertions(+), 10 deletions(-)
+2026-02-19 7841717 compared the row and column wise operation using numpy and fortan array
+
+ mandelbrot - nsc/.gitignore                |  2 ++
+ mandelbrot - nsc/mandelbrot_naive.py       | 22 +++++++++++---------
+ mandelbrot - nsc/mandelbrot_vectorize.py   | 15 +++++++-------
+ mandelbrot - nsc/memory_access_patterns.py | 32 ++++++++++++++++++++++++++++++
+ 4 files changed, 55 insertions(+), 16 deletions(-)
+2026-02-19 ef06b4d after using numpy time taken is 1.04 compare to naive 7.82 seconds
+
+ mandelbrot - nsc/mandelbrot_vectorize.py | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+2026-02-19 506486c used meshgrid for vectorized mandelbrot
+
+ mandelbrot - nsc/{mandelbrot.py => mandelbrot_naive.py} | 4 ++--
+ mandelbrot - nsc/mandelbrot_vectorize.py                | 9 +++++++++
+ 2 files changed, 11 insertions(+), 2 deletions(-)
+2026-02-05 61140f2 implemented the naive method
+
+ mandelbrot - nsc/Figure_1.png  | Bin 0 -> 65982 bytes
+ mandelbrot - nsc/mandelbrot.py |  15 ++++++---------
+ 2 files changed, 6 insertions(+), 9 deletions(-)
+2026-02-05 88f5ddc generated how much time it took
+
+ mandelbrot - nsc/mandelbrot.py | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+2026-02-05 8225025 added the compute_manderplot function
+
+ mandelbrot - nsc/mandelbrot.py | 34 +++++++++++++++++++++++++++-------
+ 1 file changed, 27 insertions(+), 7 deletions(-)
+2026-02-05 d18c85c Added the mandelbrot_point function
+
+ mandelbrot - nsc/mandelbrot.py | 31 +++++++++++++++++--------------
+ 1 file changed, 17 insertions(+), 14 deletions(-)
+2026-02-05 7258688 Add mandelbrot skeleton
+
+ mandelbrot - nsc/mandelbrot.py | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+2026-02-05 5a18022 environment specification
+
+ mandelbrot - nsc/environment.yml | 223 +++++++++++++++++++++++++++++++++++++++
+ mandelbrot - nsc/test_install.py |  29 +++++
+ 2 files changed, 252 insertions(+)
