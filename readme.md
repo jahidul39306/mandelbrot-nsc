@@ -42,7 +42,7 @@ This project benchmarks nine different implementations of the Mandelbrot set com
 | Dask local | 0.106 | 1.305 |
 | Dask cluster | 0.099 | 1.377 |
 | GPU f32 | 0.0018 | 0.0187 |
-| GPU f64 | 0.0167 | 0.2432 |
+| CPU f64 | 0.0167 | 0.2432 |
 
 ### Speedup over naive baseline
 
@@ -55,7 +55,7 @@ This project benchmarks nine different implementations of the Mandelbrot set com
 | Dask local | 52.8× | 68.0× |
 | Dask cluster | 56.5× | 64.5× |
 | GPU f32 | 3,110× | 4,748× |
-| GPU f64 | 335× | 365× |
+| CPU f64 | 335× | 365× |
 
 ### Key findings
 
