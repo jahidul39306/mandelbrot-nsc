@@ -1,3 +1,11 @@
+2026-04-26 192b7d3 final commit of nsc2026
+
+ mandelbrot - nsc/git_log.txt                | 339 ++++++++++++++++++++++++++++
+ mandelbrot - nsc/mini_project_3/git_log.txt | 339 ++++++++++++++++++++++++++++
+ mandelbrot - nsc/mini_project_3/readme.md   | 117 ++++++++++
+ mandelbrot - nsc/readme.md                  | 117 ++++++++++
+ mandelbrot - nsc/speedup_bar_chart.png      | Bin 0 -> 71725 bytes
+ 5 files changed, 912 insertions(+)
 2026-04-26 21317be created bar chart for all the speedups
 
  mandelbrot - nsc/mini_project_3/bar_chart.py       |  52 +++++++++++++++++++++

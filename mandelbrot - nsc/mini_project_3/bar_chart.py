@@ -4,7 +4,7 @@ import numpy as np
 labels = [
     "Naive", "NumPy", "Hybrid", "Numba",
     "Multiprocessing", "Dask local", "Dask cluster",
-    "GPU f32", "GPU f64"
+    "GPU f32", "CPU f64"
 ]
 
 t1024 = [5.598, 0.586, 1.858, 0.075, 0.383, 0.106, 0.099, 0.0018, 0.0167]
