@@ -3,10 +3,11 @@ import numpy as np
 import time, matplotlib.pyplot as plt
 
 KERNEL_SRC = """
+#pragma OPENCL EXTENSION cl_khr_fp64 : enable
 __kernel void mandelbrot(
     __global int *result,
-    const float x_min, const float x_max,
-    const float y_min, const float y_max,
+    const double x_min, const double x_max,
+    const double y_min, const double y_max,
     const int N, const int max_iter)
 {
     int col = get_global_id(0);
@@ -15,16 +16,16 @@ __kernel void mandelbrot(
     // Prevent out-of-bounds
     if (col >= N || row >= N) return;
     
-    float c_real = x_min + col * (x_max - x_min) / (float)N;
-    float c_imag = y_min + row * (y_max - y_min) / (float)N;  
+    double c_real = x_min + col * (x_max - x_min) / (double)(N - 1);
+    double c_imag = y_min + row * (y_max - y_min) / (double)(N - 1);  
     
     // Mandelbrot iteration
-    float zr = 0.0f, zi = 0.0f;
+    double zr = 0.0, zi = 0.0;
     int count = 0;
 
-    while (count < max_iter && zr*zr + zi*zi <= 4.0f) {
-        float tmp = zr*zr - zi*zi + c_real;
-        zi = 2.0f * zr * zi + c_imag;
+    while (count < max_iter && zr*zr + zi*zi <= 4.0) {
+        double tmp = zr*zr - zi*zi + c_real;
+        zi = 2.0 * zr * zi + c_imag;
         zr = tmp;
         count++;
     }
@@ -32,12 +33,26 @@ __kernel void mandelbrot(
 }
 """
 
-ctx = cl.create_some_context(interactive=False)
+# --- Explicitly pick a CPU OpenCL device ---
+cpu_device = None
+for platform in cl.get_platforms():
+    for device in platform.get_devices():
+        if device.type == cl.device_type.CPU:
+            cpu_device = device
+            break
+    if cpu_device:
+        break
+
+if cpu_device is None:
+    raise RuntimeError("No CPU OpenCL device found!")
+print(f"Using device: {cpu_device.name}")
+
+ctx = cl.Context([cpu_device])
 queue = cl.CommandQueue(ctx)
 prog = cl.Program(ctx, KERNEL_SRC).build()
 
 # Parameters
-N, MAX_ITER = 1024, 200
+N, MAX_ITER = 4096, 200
 X_MIN, X_MAX = -2.5, 1.0
 Y_MIN, Y_MAX = -1.25, 1.25
 
@@ -52,30 +67,13 @@ prog.mandelbrot(
     (64, 64),
     None,
     image_dev,
-    np.float32(X_MIN),
-    np.float32(X_MAX),
-    np.float32(Y_MIN),
-    np.float32(Y_MAX),
+    np.float64(X_MIN),
+    np.float64(X_MAX),
+    np.float64(Y_MIN),
+    np.float64(Y_MAX),
     np.int32(64),
     np.int32(MAX_ITER),
 )
-queue.finish()
-
-# Execution
-prog.mandelbrot(
-    queue,
-    (N, N),
-    None,
-    image_dev,
-    np.float32(X_MIN),
-    np.float32(X_MAX),
-    np.float32(Y_MIN),
-    np.float32(Y_MAX),
-    np.int32(N),
-    np.int32(MAX_ITER),
-)
-
-cl.enqueue_copy(queue, image, image_dev)
 queue.finish()
 
 # --- Time the real run ---
@@ -85,10 +83,10 @@ prog.mandelbrot(
     (N, N),
     None,
     image_dev,
-    np.float32(X_MIN),
-    np.float32(X_MAX),
-    np.float32(Y_MIN),
-    np.float32(Y_MAX),
+    np.float64(X_MIN),
+    np.float64(X_MAX),
+    np.float64(Y_MIN),
+    np.float64(Y_MAX),
     np.int32(N),
     np.int32(MAX_ITER),
 )
@@ -98,7 +96,8 @@ elapsed = time.perf_counter() - t0
 cl.enqueue_copy(queue, image, image_dev)
 queue.finish()
 
-print(f"GPU {N}x{N}: {elapsed*1e3:.1f} ms")
+print(f"CPU {N}x{N}: {elapsed*1e3:.1f} ms")
+
 plt.imshow(image, cmap="hot", origin="lower")
 plt.axis("off")
-plt.savefig("mandelbrot_gpu.png", dpi=150, bbox_inches="tight")
+plt.savefig("mandelbrot_cpu_f64.png", dpi=150, bbox_inches="tight")

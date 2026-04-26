@@ -41,7 +41,7 @@ queue = cl.CommandQueue(ctx)
 prog = cl.Program(ctx, KERNEL_SRC).build()
 
 # Parameters
-N, MAX_ITER = 1024, 200
+N, MAX_ITER = 4096, 200
 X_MIN, X_MAX = -2.5, 1.0
 Y_MIN, Y_MAX = -1.25, 1.25
 
