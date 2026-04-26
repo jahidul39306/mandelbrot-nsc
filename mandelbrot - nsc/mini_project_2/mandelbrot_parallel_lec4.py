@@ -1,11 +1,33 @@
-import numpy as np
-from numba import njit
 from multiprocessing import Pool
-import time, os, statistics
+from typing import List, Tuple
+
+import numpy as np
+import numpy.typing as npt
+from numba import njit
 
 
 @njit(cache=True)
-def mandelbrot_pixel(c_real, c_imag, max_iter):
+def mandelbrot_pixel(c_real: float, c_imag: float, max_iter: int) -> int:
+    """Compute the Mandelbrot escape iteration count for a single point.
+
+    Iterates the Mandelbrot recurrence relation for a given complex
+    coordinate and returns the iteration at which the magnitude exceeds
+    2, or ``max_iter`` if the point does not escape.
+
+    Parameters
+    ----------
+    c_real : float
+        Real component of the complex number.
+    c_imag : float
+        Imaginary component of the complex number.
+    max_iter : int
+        Maximum number of iterations.
+
+    Returns
+    -------
+    int
+        Number of iterations before escape, or ``max_iter`` if bounded.
+    """
     z_real = z_imag = 0.0
     for i in range(max_iter):
         z_sq = z_real * z_real + z_imag * z_imag
@@ -19,7 +41,46 @@ def mandelbrot_pixel(c_real, c_imag, max_iter):
 
 
 @njit(cache=True)
-def mandelbrot_chunk(row_start, row_end, N, x_min, x_max, y_min, y_max, max_iter):
+def mandelbrot_chunk(
+    row_start: int,
+    row_end: int,
+    N: int,
+    x_min: float,
+    x_max: float,
+    y_min: float,
+    y_max: float,
+    max_iter: int,
+) -> npt.NDArray[np.int32]:
+    """Compute a horizontal strip of the Mandelbrot set.
+
+    Evaluates the Mandelbrot escape iteration count for a contiguous
+    range of rows in the grid.
+
+    Parameters
+    ----------
+    row_start : int
+        Starting row index (inclusive).
+    row_end : int
+        Ending row index (exclusive).
+    N : int
+        Grid size (number of columns and total rows).
+    x_min : float
+        Minimum value of the real axis.
+    x_max : float
+        Maximum value of the real axis.
+    y_min : float
+        Minimum value of the imaginary axis.
+    y_max : float
+        Maximum value of the imaginary axis.
+    max_iter : int
+        Maximum number of iterations per point.
+
+    Returns
+    -------
+    npt.NDArray[np.int32]
+        2D array of shape ``(row_end - row_start, N)`` containing
+        iteration counts for the specified rows.
+    """
     out = np.empty((row_end - row_start, N), dtype=np.int32)
     dx = (x_max - x_min) / N
     dy = (y_max - y_min) / N
@@ -30,69 +91,106 @@ def mandelbrot_chunk(row_start, row_end, N, x_min, x_max, y_min, y_max, max_iter
     return out
 
 
-def mandelbrot_serial(N, x_min, x_max, y_min, y_max, max_iter=100):
+def mandelbrot_serial(
+    N: int,
+    x_min: float,
+    x_max: float,
+    y_min: float,
+    y_max: float,
+    max_iter: int = 100,
+) -> npt.NDArray[np.int32]:
+    """Compute the Mandelbrot set using a serial approach.
+
+    Parameters
+    ----------
+    N : int
+        Grid size (output will be ``N x N``).
+    x_min : float
+        Minimum value of the real axis.
+    x_max : float
+        Maximum value of the real axis.
+    y_min : float
+        Minimum value of the imaginary axis.
+    y_max : float
+        Maximum value of the imaginary axis.
+    max_iter : int, optional
+        Maximum number of iterations per point. Default is 100.
+
+    Returns
+    -------
+    npt.NDArray[np.int32]
+        2D array of shape ``(N, N)`` containing iteration counts.
+    """
     return mandelbrot_chunk(0, N, N, x_min, x_max, y_min, y_max, max_iter)
 
 
-def _worker(args):
+def _worker(
+    args: Tuple[int, int, int, float, float, float, float, int],
+) -> npt.NDArray[np.int32]:
+    """Worker function for parallel Mandelbrot computation.
+
+    Unpacks arguments and computes a chunk of the Mandelbrot set.
+
+    Parameters
+    ----------
+    args : tuple
+        Tuple containing arguments for ``mandelbrot_chunk``.
+
+    Returns
+    -------
+    npt.NDArray[np.int32]
+        Computed chunk of the Mandelbrot set.
+    """
     return mandelbrot_chunk(*args)
 
 
-def mandelbrot_parallel(N, x_min, x_max, y_min, y_max, max_iter=100, n_workers=4):
-    chunk_size = max(1, N // n_workers)
-    chunks, row = [], 0
+def mandelbrot_parallel(
+    N: int,
+    x_min: float,
+    x_max: float,
+    y_min: float,
+    y_max: float,
+    max_iter: int = 100,
+    n_workers: int = 4,
+) -> npt.NDArray[np.int32]:
+    """Compute the Mandelbrot set using multiprocessing.
+
+    Splits the grid into horizontal chunks and distributes them across
+    multiple worker processes using a process pool.
+
+    Parameters
+    ----------
+    N : int
+        Grid size (output will be ``N x N``).
+    x_min : float
+        Minimum value of the real axis.
+    x_max : float
+        Maximum value of the real axis.
+    y_min : float
+        Minimum value of the imaginary axis.
+    y_max : float
+        Maximum value of the imaginary axis.
+    max_iter : int, optional
+        Maximum number of iterations per point. Default is 100.
+    n_workers : int, optional
+        Number of worker processes. Default is 4.
+
+    Returns
+    -------
+    npt.NDArray[np.int32]
+        2D array of shape ``(N, N)`` containing iteration counts.
+    """
+    chunk_size: int = max(1, N // n_workers)
+    chunks: List[Tuple[int, int, int, float, float, float, float, int]] = []
+    row: int = 0
+
     while row < N:
-        row_end = min(row + chunk_size, N)
+        row_end: int = min(row + chunk_size, N)
         chunks.append((row, row_end, N, x_min, x_max, y_min, y_max, max_iter))
         row = row_end
+
     with Pool(processes=n_workers) as pool:
-        pool.map(_worker, chunks)  # un-timed warm-up: Numba JIT in workers
+        pool.map(_worker, chunks)  # Warm-up for Numba JIT
         parts = pool.map(_worker, chunks)
+
     return np.vstack(parts)
-
-
-if __name__ == "__main__":
-    N = 1024
-    x_min, x_max = -2.5, 1.0
-    y_min, y_max = -1.25, 1.25
-    max_iter = 100
-
-    # Serial execution
-    start_time = time.perf_counter()
-    mandelbrot_serial(N, x_min, x_max, y_min, y_max, max_iter)
-    serial_time = time.perf_counter() - start_time
-    print(f"Serial execution time: {serial_time:.4f} seconds")
-
-    # Parallel execution
-    start_time = time.perf_counter()
-    mandelbrot_parallel(N, x_min, x_max, y_min, y_max, max_iter, n_workers=4)
-    parallel_time = time.perf_counter() - start_time
-    print(f"Parallel execution time: {parallel_time:.4f} seconds")
-
-    times = []
-    for _ in range(3):
-        t0 = time.perf_counter()
-        mandelbrot_serial(N, x_min, x_max, y_min, y_max, max_iter)
-        times.append(time.perf_counter() - t0)
-    t_serial = statistics.median(times)
-
-    for n_workers in range(1, os.cpu_count() + 1):
-        times = []
-        for _ in range(3):
-            t0 = time.perf_counter()
-            mandelbrot_parallel(
-                N,
-                x_min,
-                x_max,
-                y_min,
-                y_max,
-                max_iter,
-                n_workers=n_workers
-            )
-            times.append(time.perf_counter() - t0)
-
-        t_par = statistics.median(times)
-        speedup = t_serial / t_par
-        print(
-            f"{n_workers:2d} workers: {t_par:.3f}s, speedup={speedup:.2f}x, eff={speedup/n_workers*100:.0f}%"
-        )
